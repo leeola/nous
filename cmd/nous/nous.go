@@ -19,7 +19,17 @@ func main() {
 		},
 	}
 
-	app.Commands = []cli.Command{}
+	app.Commands = cli.Commands{
+		{
+			Name: "store",
+		},
+		{
+			Name: "retain",
+		},
+		{
+			Name: "research",
+		},
+	}
 
 	if err := app.Run(os.Args); err != nil {
 		fmt.Println(err.Error())
