@@ -2,10 +2,11 @@ package nous
 
 type Information struct {
 	Information string
-	Nodes       []string
+	Tags        []string
 	Clipboard   *string
 	//Retain      *Retain
-	//Version int
+
+	// ParentHash string
 }
 
 // type Retain struct {

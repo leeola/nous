@@ -1,7 +1,8 @@
 package nous
 
 type Nous interface {
-	Store(Information) error
+	// Store information into the Nous implementation.
+	Store(Information) (hash string, err error)
 
 	// Retrieve(node ...string) (Node, error)
 
