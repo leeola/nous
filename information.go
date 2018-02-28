@@ -1,12 +1,15 @@
 package nous
 
+// Information is a unit of information within a Nous node.
 type Information struct {
-	Information string
-	Tags        []string
-	Clipboard   *string
-	//Retain      *Retain
+	Content string
 
-	// ParentHash string
+	Tags []string
+
+	// Clipboard is an optional value which will
+	Clipboard *string
+
+	//Retain      *Retain
 }
 
 // type Retain struct {
