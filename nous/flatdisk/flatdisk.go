@@ -1,3 +1,6 @@
+// The flatdisk implementation is a brute force, ugly implementation of the
+// Nous interface. Strictly designed for a PoC to suss out the user experience
+// and methods of storing (and retrieving) information relationships.
 package flatdisk
 
 import (
@@ -68,4 +71,53 @@ func (n *Nous) Store(i nous.Information) (string, error) {
 	}
 
 	return infoAddrM.B58String(), nil
+}
+
+// NOTE: this is an especially inefficient implementation of retrieving
+// documents with matching information.
+func (n *Nous) Retrieve(tags ...string) ([]nous.Information, error) {
+	fis, err := ioutil.ReadDir(n.root)
+	if err != nil {
+		return nil, fmt.Errorf("failed to read directory: %s", err)
+	}
+
+	var matched []nous.Information
+	for _, fi := range fis {
+		info, err := openInfo(filepath.Join(n.root, fi.Name()))
+		if err != nil {
+			return nil, fmt.Errorf("failed to open %s: %s", fi.Name(), err)
+		}
+
+		if !matchTags(tags, info.Tags) {
+			continue
+		}
+
+		matched = append(matched, info)
+	}
+
+	return matched, nil
+}
+
+func openInfo(path string) (nous.Information, error) {
+	return nous.Information{}, errors.New("not implemented")
+}
+
+func matchTags(required, tags []string) bool {
+	// looking up via a map might be faster, but the flatdisk
+	// implementation is super temporary, so i'm not worried.
+	for _, req := range required {
+		var hasReq bool
+		for _, tag := range tags {
+			if req == tag {
+				hasReq = true
+				break
+			}
+		}
+
+		if !hasReq {
+			return false
+		}
+	}
+
+	return true
 }
