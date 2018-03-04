@@ -1,4 +1,4 @@
-package main
+package main // import "github.com/leeola/nous/cmd/nous"
 
 import (
 	"fmt"
@@ -12,10 +12,17 @@ func main() {
 	app.Name = "nous"
 	app.Usage = ""
 	app.Flags = []cli.Flag{
-		cli.StringSliceFlag{
-			Name:   "config, c",
-			Usage:  "load config from `PATH`",
-			EnvVar: "NOUS_CONFIG",
+		// Nous config disabled currently.
+		// cli.StringFlag{
+		// 	Name:   "config, c",
+		// 	Usage:  "load config from `PATH`",
+		// 	EnvVar: "NOUS_CONFIG",
+		// },
+
+		cli.StringFlag{
+			Name:   "path, p",
+			Usage:  "load Nous flatdisk from `PATH`",
+			EnvVar: "NOUS_PATH",
 		},
 	}
 
@@ -24,10 +31,8 @@ func main() {
 			Name: "store",
 		},
 		{
-			Name: "retain",
-		},
-		{
-			Name: "research",
+			Name:   "show",
+			Action: ShowCmd,
 		},
 	}
 
