@@ -28,7 +28,8 @@ func main() {
 
 	app.Commands = cli.Commands{
 		{
-			Name: "store",
+			Name:   "store",
+			Action: StoreCmd,
 		},
 		{
 			Name:   "show",
