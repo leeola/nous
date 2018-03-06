@@ -30,6 +30,12 @@ func main() {
 		{
 			Name:   "store",
 			Action: StoreCmd,
+			Flags: []cli.Flag{
+				cli.StringSliceFlag{
+					Name:  "tag, t",
+					Usage: "apply the given tags to the information",
+				},
+			},
 		},
 		{
 			Name:   "show",

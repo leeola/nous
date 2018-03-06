@@ -31,6 +31,7 @@ func StoreCmd(ctx *cli.Context) error {
 
 	info := nous.Information{
 		Content: strings.Join(ctx.Args(), " "),
+		Tags:    ctx.StringSlice("tag"),
 	}
 
 	hash, err := n.Store(info)
