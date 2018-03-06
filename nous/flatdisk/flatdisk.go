@@ -8,6 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"io/ioutil"
+	"os"
 	"path/filepath"
 
 	"github.com/leeola/nous"
@@ -99,7 +100,23 @@ func (n *Nous) Retrieve(tags ...string) ([]nous.Information, error) {
 }
 
 func openInfo(path string) (nous.Information, error) {
-	return nous.Information{}, errors.New("not implemented")
+	f, err := os.Open(path)
+	if err != nil {
+		return nous.Information{}, fmt.Errorf("failed to open file %s: %s", path, err)
+	}
+	defer f.Close()
+
+	b, err := ioutil.ReadAll(f)
+	if err != nil {
+		return nous.Information{}, fmt.Errorf("failed to open file %s: %s", path, err)
+	}
+
+	var info nous.Information
+	if err := json.Unmarshal(b, &info); err != nil {
+		return nous.Information{}, fmt.Errorf("failed to marshal info: %s", err)
+	}
+
+	return info, nil
 }
 
 func matchTags(required, tags []string) bool {
