@@ -27,13 +27,13 @@ func ShowCmd(ctx *cli.Context) error {
 		return fmt.Errorf("failed to create Flatdisk Nous: %s", err)
 	}
 
-	infos, err := nous.Retrieve("foo")
+	infos, err := nous.Retrieve(ctx.Args()...)
 	if err != nil {
 		return fmt.Errorf("failed to show info: %s", err)
 	}
 
 	for _, info := range infos {
-		fmt.Printf("%s\n\n", info.Content)
+		fmt.Printf("match: %s\n\n", info.Content)
 	}
 
 	return nil
