@@ -41,6 +41,10 @@ func main() {
 			Name:   "show",
 			Action: ShowCmd,
 		},
+		{
+			Name:   "serve",
+			Action: ServeCmd,
+		},
 	}
 
 	if err := app.Run(os.Args); err != nil {

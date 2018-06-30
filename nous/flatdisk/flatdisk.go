@@ -15,17 +15,7 @@ import (
 	multihash "github.com/multiformats/go-multihash"
 )
 
-var (
-	multihashCode uint64
-)
-
-func init() {
-	c, ok := multihash.Names["blake2b-256"]
-	if !ok {
-		panic("multihash name not found")
-	}
-	multihashCode = c
-}
+var multihashCode = multihash.Names["blake2b-32"]
 
 // Config for the flatdisk nous implementation.
 type Config struct {
@@ -54,6 +44,8 @@ func (n *Nous) Store(i nous.Information) (string, error) {
 		return "", errors.New("information content cannot be empty")
 	}
 
+	// TODO(leeola): hash the whole information.
+	//
 	// hash the info content to get the address.
 	// -1 uses the default size
 	infoAddrM, err := multihash.Sum([]byte(i.Content), multihashCode, -1)
