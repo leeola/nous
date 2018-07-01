@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"errors"
+	"fmt"
 	"net/http"
 	"os"
 	"os/signal"
@@ -13,7 +14,10 @@ import (
 )
 
 func ServeCmd(ctx *cli.Context) error {
-	var srv nous.Server
+	srv, err := nous.NewServer()
+	if err != nil {
+		return fmt.Errorf("newserver: %v", err)
+	}
 
 	idleConnsClosed := make(chan struct{})
 	go func() {
@@ -31,7 +35,6 @@ func ServeCmd(ctx *cli.Context) error {
 		close(idleConnsClosed)
 	}()
 
-	log.Info().Msg("listening...")
 	if err := srv.ListenAndServe(); err != http.ErrServerClosed {
 		// Error starting or closing listener:
 		log.Info().Err(err).Msg("http server failed")
