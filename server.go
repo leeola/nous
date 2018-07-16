@@ -60,7 +60,7 @@ func (s *Server) handleGet(w http.ResponseWriter, r *http.Request) {
   </body>
 </html>
 `)
-	p := map[string]string{"UserName": "Astaxie"}
+	p := map[string]string{}
 	t.Execute(w, p)
 }
 
