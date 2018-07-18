@@ -11,8 +11,6 @@ const (
 
 // Data is a unit of information within a Nous node.
 type Data struct {
-	Type Type `json:"nousType"`
-
 	ID string `json:"id"`
 
 	ParentID string `json:"parentId"`
@@ -21,6 +19,7 @@ type Data struct {
 
 	Name string `json:"name"`
 
+	Type  Type       `json:"nousType"`
 	Text  *DataText  `json:"text,omitempty"`
 	Inv   *DataInv   `json:"inv,omitempty"`
 	Image *DataImage `json:"image,omitempty"`
@@ -41,7 +40,7 @@ type DataText struct {
 	// gives it context. Yet, if you wanted to copy the address to enter
 	// in a form, you wouldn't want the Content. Value allows you to store
 	// *just* the value.
-	Value *string
+	Value string
 }
 
 type DataImage struct {

@@ -1,42 +1,34 @@
 package main
 
 import (
-	"errors"
+	"context"
 	"fmt"
-	"os"
 
+	"github.com/leeola/nous"
 	"github.com/urfave/cli"
 )
 
-func StoreCmd(ctx *cli.Context) error {
-	path := ctx.GlobalString("path")
-	if path == "" {
-		return errors.New("missing required path flag value")
+func StoreCmd(clictx *cli.Context) error {
+	n, err := newNous(clictx)
+	if err != nil {
+		return err // no wrap
 	}
 
-	if err := os.MkdirAll(path, 0755); err != nil {
-		return fmt.Errorf("failed to make flatdisk path %s: %s", path, err)
+	info := nous.Data{
+		Name: "foo",
+		Type: nous.TypeText,
+		Text: &nous.DataText{
+			Content: "foo",
+		},
 	}
 
-	// nConf := flatdisk.Config{
-	// 	Path: path,
-	// }
-	// n, err := flatdisk.New(nConf)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to create Flatdisk Nous: %s", err)
-	// }
+	ctx := context.Background()
 
-	// info := nous.Information{
-	// 	Content: strings.Join(ctx.Args(), " "),
-	// 	Tags:    ctx.StringSlice("tag"),
-	// }
+	if err := n.Store(ctx, info); err != nil {
+		return fmt.Errorf("store: %s", err)
+	}
 
-	// hash, err := n.Store(info)
-	// if err != nil {
-	// 	return fmt.Errorf("failed to show info: %s", err)
-	// }
+	fmt.Println("success")
 
-	// fmt.Println(hash)
-
-	return errors.New("not implemented")
+	return nil
 }

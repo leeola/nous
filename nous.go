@@ -8,10 +8,13 @@
 package nous
 
 import (
-	"errors"
+	"context"
 	"fmt"
+	"strconv"
+	"time"
 
 	"github.com/leeola/fixity"
+	"github.com/leeola/fixity/value"
 )
 
 // Nous information storage and .
@@ -26,7 +29,7 @@ func New(s fixity.Store) (*Nous, error) {
 	}, nil
 }
 
-func (n *Nous) Store(d Data) error {
+func (n *Nous) Store(ctx context.Context, d Data) error {
 	switch d.Type {
 	case TypeText:
 		if d.Text == nil {
@@ -36,5 +39,23 @@ func (n *Nous) Store(d Data) error {
 		return fmt.Errorf("unexpected data type: %s", d.Type)
 	}
 
-	return errors.New("not implemented")
+	v := textToValues(d)
+
+	id := strconv.FormatInt(time.Now().Unix(), 10)
+
+	if _, err := n.s.Write(ctx, id, v, nil); err != nil {
+		return fmt.Errorf("store: %v", err)
+	}
+
+	return nil
+}
+
+func textToValues(info Data) fixity.Values {
+	v := fixity.Values{
+		"parentId": value.String(info.ParentID),
+		"name":     value.String(info.Name),
+		"content":  value.String(info.Text.Content),
+		"value":    value.String(info.Text.Value),
+	}
+	return v
 }
