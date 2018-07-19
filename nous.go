@@ -17,6 +17,8 @@ import (
 	"github.com/leeola/fixity/value"
 )
 
+const FixityNamespace = "nous"
+
 // Nous information storage and .
 type Nous struct {
 	s fixity.Store
@@ -43,7 +45,8 @@ func (n *Nous) Store(ctx context.Context, d Data) error {
 
 	id := strconv.FormatInt(time.Now().Unix(), 10)
 
-	if _, err := n.s.Write(ctx, id, v, nil); err != nil {
+	_, err := n.s.WriteNamespace(ctx, id, FixityNamespace, v, nil)
+	if err != nil {
 		return fmt.Errorf("store: %v", err)
 	}
 
