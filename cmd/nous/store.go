@@ -28,6 +28,7 @@ func StoreCmd(clictx *cli.Context) error {
 		Type: nous.TypeText,
 		Text: &nous.DataText{
 			Content: content,
+			Value:   clictx.String("value"),
 		},
 	}
 

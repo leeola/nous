@@ -48,6 +48,10 @@ func main() {
 					Name:  "name",
 					Usage: "define the name for this content",
 				},
+				cli.StringFlag{
+					Name:  "value, v",
+					Usage: "an optional value for this content",
+				},
 				cli.BoolFlag{
 					Name:  "dont-name-from-content",
 					Usage: "dont infer name from content if unspecified",
