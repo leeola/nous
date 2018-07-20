@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 
 	"github.com/leeola/nous"
 	"github.com/urfave/cli"
@@ -14,11 +15,19 @@ func StoreCmd(clictx *cli.Context) error {
 		return err // no wrap
 	}
 
+	content := strings.Join(clictx.Args(), " ")
+
+	name := clictx.String("name")
+
+	if name == "" && !clictx.Bool("dont-name-from-content") {
+		name = content
+	}
+
 	info := nous.Data{
-		Name: "foo",
+		Name: name,
 		Type: nous.TypeText,
 		Text: &nous.DataText{
-			Content: "foo",
+			Content: content,
 		},
 	}
 

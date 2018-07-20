@@ -35,12 +35,22 @@ func main() {
 
 	app.Commands = cli.Commands{
 		{
-			Name:   "store",
-			Action: StoreCmd,
+			Name:      "store",
+			Action:    StoreCmd,
+			ArgsUsage: "CONTENT",
+			Usage:     "store CONTENT in nous",
 			Flags: []cli.Flag{
 				cli.StringSliceFlag{
 					Name:  "tag, t",
 					Usage: "apply the given tags to the information",
+				},
+				cli.StringFlag{
+					Name:  "name",
+					Usage: "define the name for this content",
+				},
+				cli.BoolFlag{
+					Name:  "dont-name-from-content",
+					Usage: "dont infer name from content if unspecified",
 				},
 			},
 		},

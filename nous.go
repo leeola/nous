@@ -10,11 +10,10 @@ package nous
 import (
 	"context"
 	"fmt"
-	"strconv"
-	"time"
 
 	"github.com/leeola/fixity"
 	"github.com/leeola/fixity/value"
+	"github.com/leeola/nous/util/strutil"
 )
 
 const FixityNamespace = "nous"
@@ -37,13 +36,18 @@ func (n *Nous) Store(ctx context.Context, d Data) error {
 		if d.Text == nil {
 			return fmt.Errorf("text cannot be nil with %s", d.Type)
 		}
+
 	default:
 		return fmt.Errorf("unexpected data type: %s", d.Type)
 	}
 
+	if d.Name == "" {
+		return fmt.Errorf("name cannot be empty")
+	}
+
 	v := textToValues(d)
 
-	id := strconv.FormatInt(time.Now().Unix(), 10)
+	id := formatID(d.Name)
 
 	_, err := n.s.WriteNamespace(ctx, id, FixityNamespace, v, nil)
 	if err != nil {
@@ -61,4 +65,14 @@ func textToValues(info Data) fixity.Values {
 		"value":    value.String(info.Text.Value),
 	}
 	return v
+}
+
+func formatID(name string) (id string) {
+	id = strutil.AlphaNum(name)
+
+	if len(id) > 30 {
+		id = id[:30]
+	}
+
+	return id
 }
