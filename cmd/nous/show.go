@@ -1,21 +1,25 @@
 package main
 
 import (
-	"errors"
-	"fmt"
-	"os"
+	"context"
+	"strings"
 
 	"github.com/urfave/cli"
 )
 
-func ShowCmd(ctx *cli.Context) error {
-	path := ctx.GlobalString("path")
-	if path == "" {
-		return errors.New("missing required path flag value")
+func ShowCmd(clictx *cli.Context) error {
+	n, err := newNous(clictx)
+	if err != nil {
+		return err // no wrap
 	}
 
-	if err := os.MkdirAll(path, 0755); err != nil {
-		return fmt.Errorf("failed to make flatdisk path %s: %s", path, err)
+	ctx := context.Background()
+
+	queryStr := strings.Join(clictx.Args(), " ")
+
+	err = n.Show(ctx, queryStr)
+	if err != nil {
+		return err
 	}
 
 	return nil

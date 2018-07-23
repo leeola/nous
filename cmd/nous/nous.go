@@ -59,8 +59,17 @@ func main() {
 			},
 		},
 		{
-			Name:   "show",
-			Action: ShowCmd,
+			Name:      "show",
+			Action:    ShowCmd,
+			Aliases:   []string{"s"},
+			ArgsUsage: "QUERY",
+			Usage:     "show QUERY",
+			Flags: []cli.Flag{
+				cli.StringSliceFlag{
+					Name:  "tag, t",
+					Usage: "query with tags",
+				},
+			},
 		},
 		{
 			Name:   "serve",

@@ -12,6 +12,7 @@ import (
 	"fmt"
 
 	"github.com/leeola/fixity"
+	"github.com/leeola/fixity/q"
 	"github.com/leeola/fixity/value"
 	"github.com/leeola/nous/util/strutil"
 )
@@ -53,6 +54,14 @@ func (n *Nous) Store(ctx context.Context, d Data) error {
 	if err != nil {
 		return fmt.Errorf("store: %v", err)
 	}
+
+	return nil
+}
+
+func (n *Nous) Show(ctx context.Context, qStr string) error {
+	_ = q.FromString(qStr)
+
+	// matchAddrs, err := n.Query(qu)
 
 	return nil
 }
